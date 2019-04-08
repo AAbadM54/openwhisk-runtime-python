@@ -17,7 +17,6 @@ def build_shell='''
 env | grep JAVA || /bin/true
 ./gradlew \
   :core:pythonAction:distDocker \
-  :core:python3AiAction:distDocker \
   :core:pythonActionLoop:distDocker \
   -PdockerBuildArgs="OPENWHISK_SOURCE_REGISTRY=${OPENWHISK_TARGET_REGISTRY:-docker.io}/${OPENWHISK_TARGET_PREFIX:-openwhisk}" \
   -PdockerBuildArgs="OPENWHISK_SOURCE_REGISTRY=${OPENWHISK_TARGET_REGISTRY:-docker.io}/${OPENWHISK_TARGET_PREFIX:-openwhisk}" \
@@ -31,7 +30,7 @@ def manifest_shell='''
 registry=${OPENWHISK_TARGET_REGISTRY:-docker.io}
 prefix=${OPENWHISK_TARGET_PREFIX:-openwhisk}
 rm -rf ~/.docker/manifests
-for i in python3action python3aiaction actionloop-python-v3.7; do
+for i in python3action actionloop-python-v3.7; do
   docker manifest create ${registry}/${prefix}/$i:latest \
     ${registry}/${prefix}/$i:latest-x86_64 \
     ${registry}/${prefix}/$i:latest-s390x \
