@@ -15,11 +15,14 @@
 
 def build_shell='''
 env | grep JAVA || /bin/true
+
+registry_build_arg="OPENWHISK_SOURCE_REGISTRY=${OPENWHISK_TARGET_REGISTRY:-docker.io}/${OPENWHISK_TARGET_PREFIX:-openwhisk}"
+dockerskeleton_tag_build_arg="DOCKERSKELETON_TAG=${DOCKERSKELETON_TAG:-latest}"
+
 ./gradlew \
-  :core:pythonAction:distDocker \
-  :core:pythonActionLoop:distDocker \
-  -PdockerBuildArgs="OPENWHISK_SOURCE_REGISTRY=${OPENWHISK_TARGET_REGISTRY:-docker.io}/${OPENWHISK_TARGET_PREFIX:-openwhisk}" \
-  -PdockerBuildArgs="OPENWHISK_SOURCE_REGISTRY=${OPENWHISK_TARGET_REGISTRY:-docker.io}/${OPENWHISK_TARGET_PREFIX:-openwhisk}" \
+  :core:python3Action:distDocker \
+  :core:python3ActionLoop:distDocker \
+  -PdockerBuildArgs="$registry_build_arg $dockerskeleton_tag_build_arg" \
   -PdockerRegistry=${OPENWHISK_TARGET_REGISTRY:-docker.io} \
   -PdockerImagePrefix=${OPENWHISK_TARGET_PREFIX:-openwhisk} \
   -PdockerImageTag=latest-$(uname -m) \
